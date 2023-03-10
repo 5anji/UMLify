@@ -1,17 +1,58 @@
 package lexer;
 
-public class Lexer {
-    public static void main(String[] args) {
-        
-        String line = "<diagram type=3>";
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-        String[] tokens = tokenize(line);
-        for (int i = 0; i < tokens.length; i++) {
-            System.out.println(tokens[i]);
-        }
+public class Lexer {
+
+    private Set<String> structural_elements;
+    private Set<String> entities;
+    private Set<String> attributes;
+    private String RELATION = "relation";
+    private char ASSIGNMENT = '=';
+    private char START_TAG = '<';
+    private char END_TAG = '<';
+
+
+    public Lexer () {
+        structural_elements = new HashSet<>(Arrays.asList("package", "diagram"));
+        entities = new HashSet<>(Arrays.asList("actor", "usecase"));
+        attributes = new HashSet<>(Arrays.asList("name", "type"));
     }
 
-    static String[] tokenize (String l) {
+
+    public List<Token> analyze (String l) {
+        List<Token> lexems = new ArrayList<>();
+
+        String[] tokens = tokenize(l);
+        int counter = 1;
+        for (int i = 0; i < tokens.length; i++) {
+            String token = tokens[i].toLowerCase();
+            
+            if (structural_elements.contains(token)) {
+                lexems.add(new Token(counter, "STRUCTURE", tokens[i]));
+            } else if (entities.contains(token)) {
+                lexems.add(new Token(counter, "ENTITY", tokens[i]));
+            } else if (attributes.contains(token)) {
+                lexems.add(new Token(counter, "ATTRIBUTE", tokens[i]));
+            } else if (token.compareTo(RELATION) == 0) {
+                lexems.add(new Token(counter, "RELATION", tokens[i]));
+            } else if (token.compareTo(Character.toString(ASSIGNMENT)) == 0) {
+                lexems.add(new Token(counter, "ASSIGNMENT", tokens[i]));
+            } else if (token.compareTo(Character.toString(START_TAG)) == 0  ||  token.compareTo(Character.toString(END_TAG)) == 0) {
+                lexems.add(new Token(counter, "TAG LIMIT", tokens[i]));
+            }
+
+            counter++;
+        }
+        return lexems;
+    }
+
+
+    private String[] tokenize (String l) {
         StringBuffer sb = new StringBuffer();
 
         for (int i = 0; i < l.length() - 1; i++) {
