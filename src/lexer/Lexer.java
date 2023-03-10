@@ -1,9 +1,12 @@
 package lexer;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Scanner;
 import java.util.Set;
 
 public class Lexer {
@@ -16,22 +19,33 @@ public class Lexer {
     private char START_TAG = '<';
     private char END_TAG = '<';
 
-
-    public Lexer () {
+    public Lexer() {
         structural_elements = new HashSet<>(Arrays.asList("package", "diagram"));
         entities = new HashSet<>(Arrays.asList("actor", "usecase"));
         attributes = new HashSet<>(Arrays.asList("name", "type"));
     }
 
-
-    public List<Token> analyze (String l) {
+    public List<Token> analyze(String path) {
         List<Token> lexems = new ArrayList<>();
+        String text = new String();
+        
+        try {
+            File file = new File(path);
+            Scanner sc = new Scanner(file);
+            while (sc.hasNext()) {
+                text += sc.next();
+            }
+            sc.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        String[] tokens = tokenize(l);
+        String[] tokens = tokenize(text);
+
         int counter = 1;
         for (int i = 0; i < tokens.length; i++) {
             String token = tokens[i].toLowerCase();
-            
+
             if (structural_elements.contains(token)) {
                 lexems.add(new Token(counter, "STRUCTURE", tokens[i]));
             } else if (entities.contains(token)) {
@@ -42,7 +56,8 @@ public class Lexer {
                 lexems.add(new Token(counter, "RELATION", tokens[i]));
             } else if (token.compareTo(Character.toString(ASSIGNMENT)) == 0) {
                 lexems.add(new Token(counter, "ASSIGNMENT", tokens[i]));
-            } else if (token.compareTo(Character.toString(START_TAG)) == 0  ||  token.compareTo(Character.toString(END_TAG)) == 0) {
+            } else if (token.compareTo(Character.toString(START_TAG)) == 0
+                    || token.compareTo(Character.toString(END_TAG)) == 0) {
                 lexems.add(new Token(counter, "TAG LIMIT", tokens[i]));
             }
 
@@ -51,8 +66,7 @@ public class Lexer {
         return lexems;
     }
 
-
-    private String[] tokenize (String l) {
+    private String[] tokenize(String l) {
         StringBuffer sb = new StringBuffer();
 
         for (int i = 0; i < l.length() - 1; i++) {
@@ -61,13 +75,14 @@ public class Lexer {
 
             sb.append(curr);
 
-            if ((Character.isLetter(curr) || Character.isDigit(curr))  &&  !Character.isLetter(next)  &&  next != 39  &&  next != ' ') {
+            if ((Character.isLetter(curr) || Character.isDigit(curr)) && !Character.isLetter(next) && next != 39
+                    && next != ' ') {
                 sb.append(" ");
-            } else if (curr >= 60  &&  curr <= 62) {
-                if (Character.isLetter(next) || Character.isDigit(next) ||  next == 39) {
+            } else if (curr >= 60 && curr <= 62) {
+                if (Character.isLetter(next) || Character.isDigit(next) || next == 39) {
                     sb.append(" ");
                 }
-            } else if (curr == 39  &&  !Character.isLetter(next)) {
+            } else if (curr == 39 && !Character.isLetter(next)) {
                 sb.append(" ");
             }
         }
