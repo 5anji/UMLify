@@ -9,14 +9,14 @@ import org.json.JSONObject;
 public class Translator {
 
     private final static String url = "https://api.openai.com/v1/completions";
-    private final static String API_KEY = "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";
+    private final static String ap_k = "";
 
     public static String translate (String text) throws Exception {
         HttpURLConnection con = (HttpURLConnection) new URL(url).openConnection();
 
         con.setRequestMethod("POST");
         con.setRequestProperty("Content-Type", "application/json");
-        con.setRequestProperty("Authorization", "Bearer " + API_KEY);
+        con.setRequestProperty("Authorization", "Bearer " + ap_k);
 
         JSONObject data = new JSONObject();
         data.put("model", "text-davinci-003");
