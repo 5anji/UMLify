@@ -1,0 +1,4 @@
+<diagram type='usecase'>
+<actor name='john'>
+<usecase name='proceed'>
+<relation source='john' dest='proceed' type='association'>
