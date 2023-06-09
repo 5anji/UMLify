@@ -38,13 +38,11 @@ public class Parser {
         List<Token> tokens = lexer.analyze(path);
 
         int index = 0;
-
         boolean tagStarted = false;
+
         while (index < tokens.size()) {
             byte marker = 0;
             String elementName = tokens.get(index).getLiteral().toLowerCase();
-            boolean entityChecker = tokens.get(index).getCategory().equals(Category.ENTITY.toString());
-            boolean relationChecker = tokens.get(index).getCategory().equals(Category.RELATION.toString());
 
             if (!containsNonNumeric(elementName)) {
                 System.err.println("WARNING: only digits are inside element  >>> " + elementName + " <<<");
@@ -65,24 +63,25 @@ public class Parser {
                 }
             }
 
-            if (entityChecker || relationChecker) {
+            if (tokens.get(index).getCategory().equals(Category.ENTITY.toString()) 
+                ||  tokens.get(index).getCategory().equals(Category.RELATION.toString())) {
                 Element e = new Element(elementName);
                 Map<String, String> attributes = new HashMap<>();
                 index++;
-
-                while (!entityChecker && !relationChecker && index < tokens.size()) {
+                
+                while ((!tokens.get(index).getCategory().equals(Category.ENTITY.toString()) 
+                        &&  !tokens.get(index).getCategory().equals(Category.RELATION.toString())) 
+                        &&  index < tokens.size() - 1) {
                     if (tokens.get(index).getCategory().equals(Category.ATTRIBUTE.toString())) {
-                        attributes.put(
-                                tokens.get(index).getLiteral(),
-                                tokens.get(index + 2).getLiteral().replace("'", ""));
-
-                        index += 2;
+                        attributes.put(tokens.get(index).getLiteral(), tokens.get(index + 2).getLiteral().replace("'", ""));
+                        index += 3;
+                    } else {
+                        index++;
                     }
-                    index++;
                 }
 
                 e.setAttributes(attributes);
-                parseList.add(e);
+                this.parseList.add(e);
                 marker++;
             }
 
