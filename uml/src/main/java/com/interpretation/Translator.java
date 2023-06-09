@@ -4,19 +4,22 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Map;
+
 import org.json.JSONObject;
+
+import com.loader.EnvLoader;
 
 public class Translator {
 
-    private final static String url = "";
-    private final static String API_KEY = "";
+    private static final Map<String, String> envVariables = EnvLoader.loadEnvVariables();
 
     public static String translate (String text) throws Exception {
-        HttpURLConnection con = (HttpURLConnection) new URL(url).openConnection();
+        HttpURLConnection con = (HttpURLConnection) new URL(envVariables.get("OPEN_AI_URL")).openConnection();
 
         con.setRequestMethod("POST");
         con.setRequestProperty("Content-Type", "application/json");
-        con.setRequestProperty("Authorization", "Bearer " + API_KEY);
+        con.setRequestProperty("Authorization", "Bearer " + envVariables.get("API_KEY"));
 
         JSONObject data = new JSONObject();
         data.put("model", "text-davinci-003");

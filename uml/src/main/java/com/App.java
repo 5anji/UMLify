@@ -8,7 +8,7 @@ import com.parser.*;
 
 public class App {
 
-    private static String input_file_path = "/home/lavandaboy/PBL_projects/UMLify_2.0/uml/src/main/java/com/test.xuml";
+    private static String input_file_path = "uml/src/main/resources/test.xuml";
     public static void main(String[] args) throws Exception {
         
         Parser p = new Parser();

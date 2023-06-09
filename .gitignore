@@ -3,4 +3,6 @@
 
 /uml/target
 
+/uml/src/main/resources/.env
+
 *.png
