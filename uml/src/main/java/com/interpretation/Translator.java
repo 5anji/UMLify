@@ -8,8 +8,8 @@ import org.json.JSONObject;
 
 public class Translator {
 
-    private final static String url = "https://api.openai.com/v1/completions";
-    private final static String API_KEY = "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";
+    private final static String url = "";
+    private final static String API_KEY = "";
 
     public static String translate (String text) throws Exception {
         HttpURLConnection con = (HttpURLConnection) new URL(url).openConnection();
