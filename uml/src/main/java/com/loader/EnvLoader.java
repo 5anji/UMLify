@@ -11,7 +11,7 @@ public class EnvLoader {
 
     public static Map<String, String> loadEnvVariables() {
         Map<String, String> envVariables = new HashMap<>();
-        Path envFilePath = Paths.get("./.env");
+        Path envFilePath = Paths.get("./env");
 
         try (Stream<String> lines = Files.lines(envFilePath)) {
             lines.forEach(line -> {
