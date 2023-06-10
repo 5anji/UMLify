@@ -8,9 +8,9 @@ import com.parser.*;
 
 public class App {
 
-    private static String input_file_path = "./src/main/resources/test.xuml";
+    private static String input_file_path = "./res/test.xuml";
     public static void main(String[] args) throws Exception {
-        
+
         Parser p = new Parser();
         p.fillParseList(input_file_path);
         System.out.println(p.getParseList().get(0).getAttributes());

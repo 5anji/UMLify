@@ -8,10 +8,10 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 public class EnvLoader {
-    
+
     public static Map<String, String> loadEnvVariables() {
         Map<String, String> envVariables = new HashMap<>();
-        Path envFilePath = Paths.get("./src/main/resources/.env");
+        Path envFilePath = Paths.get("./.env");
 
         try (Stream<String> lines = Files.lines(envFilePath)) {
             lines.forEach(line -> {
