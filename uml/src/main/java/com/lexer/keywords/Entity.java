@@ -4,7 +4,7 @@ public enum Entity {
     diagram,
     actor, usecase, 
     message, control, boundary, entity,
-    Class, 
+    clas, 
     state, 
     activity, object, initial_node, final_node, fork,
     component, assembly_connector,

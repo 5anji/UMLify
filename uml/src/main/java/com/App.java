@@ -13,7 +13,6 @@ public class App {
 
         Parser p = new Parser();
         p.fillParseList(input_file_path);
-        System.out.println(p.getParseList().get(0).getAttributes());
 
         System.out.println(createRequest(p.getParseList()));
         String uiRequest = Translator.translate(createRequest(p.getParseList()));
